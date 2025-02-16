@@ -4,6 +4,7 @@ import React, { useEffect, useMemo } from "react";
 import { getFood } from "../services/actions/foodAction";
 import Pagination from "./Pagination";
 import Loading from "./Loading";
+import FoodItem from "./FoodItem";
 const Foods = () => {
   const { foods, isLoading, foodPerPage, page } = useSelector(
     (state) => state.foodReducer
@@ -26,20 +27,14 @@ const Foods = () => {
       <div className="grid grid-cols-1 sm:grid-cols-2  lg:grid-cols-3 gap-8">
         {foods &&
           foods.map((item) => (
-            <div
+            <FoodItem
+              className={"!disabled:cursor-not-allowed"}
+              disabled={carts.find((item2) => item2.idDrink === item.idDrink)}
+              item={item}
+              handleClick={() => dispatch(addCartAction(item))}
               key={item.idDrink}
-              className="flex flex-col justify-center items-center gap-4"
-            >
-              <img className="max-w-[300px] " src={item.strDrinkThumb} />
-              <p className="font-semibold text-xl ">{item.strDrink}</p>
-              <button
-                disabled={carts.includes(item)}
-                onClick={() => dispatch(addCartAction(item))}
-                className="!disabled:cursor-not-allowed"
-              >
-                Cart
-              </button>
-            </div>
+              text={"Add to cart"}
+            />
           ))}
       </div>
       <Pagination />
